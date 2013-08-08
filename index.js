@@ -57,7 +57,7 @@ var go = module.exports = function (opts) {
       if (err) return console.error(err);
       var port = address.port;
       console.log('api server listening: http://localhost:' + port);
-      maybeStartPages(bfy, config, { address: address });
+      maybeStartPages({ address: address });
     });
   } else {
     maybeStartPages(null);
