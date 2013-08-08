@@ -1,36 +1,37 @@
 {
-    "name" : "appup",
-    "version" : "0.0.0",
-    "description" : "CLI to launch apps that use an express main server and an optional restif api server.",
-    "main" : "index.js",
-    "scripts" : {
-      "test-main" :  "tap test/*.js",
-      "test-0.8"  :  "nave use 0.8 npm run test-main",
-      "test-0.10" :  "nave use 0.10 npm run test-main",
-      "test-all": "npm run test-main && npm run test-0.8 && npm run test-0.10",
-      "test"      :  "if [ -e $TRAVIS ]; then npm run test-all; else npm run test-main; fi"
-    },
-    "repository" : {
-      "type" : "git",
-      "url" : "git://github.com/thlorenz/appup.git"
-    },
-    "homepage" : "https://github.com/thlorenz/appup",
-    "dependencies" : {
-    },
-    "devDependencies" : {
-      "nave": "~0.4.3",
-      "tape": "~1.0.4",
-      "tap": "~0.4.3"
-    },
-    "keywords": [] ,
-    "author" : {
-      "name" : "Thorsten Lorenz",
-      "email" : "thlorenz@gmx.de",
-      "url" : "http://thlorenz.com"
-    },
-    "license" : {
-      "type": "MIT",
-      "url": "https://github.com/thlorenz/appup/blob/master/LICENSE"
-    },
-    "engine" : { "node" : ">=0.6" }
+  "name": "appup",
+  "version": "0.0.0",
+  "description": "CLI to launch apps that use an express main server and an optional restif api server.",
+  "main": "index.js",
+  "bin": "./bin/appup.js",
+  "scripts": {
+    "test": "tap test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/thlorenz/appup.git"
+  },
+  "homepage": "https://github.com/thlorenz/appup",
+  "dependencies": {
+    "express": "~3.3.4",
+    "restify": "~2.6.0",
+    "optimist": "~0.6.0",
+    "browserify": "~2.26.0"
+  },
+  "devDependencies": {
+    "tap": "~0.4.3"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Thorsten Lorenz",
+    "email": "thlorenz@gmx.de",
+    "url": "http://thlorenz.com"
+  },
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/thlorenz/appup/blob/master/LICENSE"
+  },
+  "engine": {
+    "node": ">=0.6"
+  }
 }

@@ -1,100 +1,65 @@
 'use strict';
 
 var path = require('path');
-var restify = require('restify');
-var express = require('express');
 var optimist = require('optimist');
 var browserify = require('browserify');
 
-var cwd = process.cwd();
+var startPages = require('./lib/start-pages');
+var startApi = require('./lib/start-api');
 
-var argv = optimist
-  .usage('nodeup [options] file')
-  .demand('pages')
-  .describe('pages', 'port to start pages server on')
-  .describe('api', 'port to start api server on')
-  .demand('config')
-  .describe('config', 'point to a config file to override routes, etc. for the pages and api server')
-  .argv;
 
-function usageAndBail () {
-  optimist.showHelp();
-  process.exit();
-}
+/**
+ * Creates browserify bundle and starts up pages server and/or api server according to the supplied options.
+ *
+ * If no api port is given, the api server is not started up.
+ * If no pages port is given, the pages server is not started up.
+ * If neither port is given, an error is thrown.
+ * 
+ * @name exports
+ * @function
+ * @param opts {Object} with the following properties
+ *  - pages: port at which to start up pages server (optional)
+ *  - api: port at which to start up api server (optional)
+ *  - config: configuration provided to override browserify specific options and/or custom API/Pages servers init functions
+ *  - entry: entry file to add to browserify
+ */
+var go = module.exports = function (opts) {
 
-if (argv.help) usageAndBail();
+  var config    =  opts.config || {};
+  var pagesPort =  opts.pagesPort;
+  var apiPort   =  opts.apiPort;
+  var entry     =  opts.entry;
 
-var entry = argv._[0];
+  if (!pagesPort && !apiPort) throw new Error('Need to pass either pages or api port in order for me to start an app');
 
-if (!entry) {
-  // TODO: we could also find the 'browser' field in the cwd/package.json
-  console.error('Please provide path to entry file as last argument');
-  usageAndBail();
-}
+  // TODO: be smarter about transforms found in cwd/package.json
+  // maybe solved once we don't provide entry and have browserify pick up transforms
+  var bfy = config.browserify ? config.browserify() : browserify();
+  var bundleOpts = config.bundleOpts || { insertGlobals: true, debug: true };
 
-var config = require(path.join(cwd, argv.config));
+  var initPages = config.initPages || function () {};
+  var initApi = config.initApi || function () {};
 
-// TODO: be smarter about transforms found in cwd/package.json
-var bfy = config.browserify ? config.browserify() : browserify();
-var bundleOpts = config.bundleOpts || { insertGlobals: true, debug: true };
+  bfy.require(entry, { entry: true });
 
-bfy.require(entry, { entry: true });
-
-function initPages (bfy, config, apiServerInfo) {
-  var pagesApp = express();
-
-  if (config.initPages) {
-    config.initPages(pagesApp, express, apiServerInfo);
+  function maybeStartPages (apiServerInfo) {
+    if (pagesPort) {
+      startPages(bfy, bundleOpts, initPages, pagesPort, apiServerInfo, function (err, address) {
+        var port = address.port;
+        console.log('pages server listening: http://localhost:' + port);
+      });
+    }
   }
 
-  pagesApp.get('/build.js', function(req, res) {
-    res.contentType('application/javascript');
-    bfy.bundle(bundleOpts, function(err, src) {
-      if (err) {
-        console.error(err);
-        return res.send(500);
-      }
-      res.end(src);
+  // api server needst to be started before pages server in order to provide api server location to the latter
+  if (apiPort) { 
+    startApi(initApi, apiPort, function (err, address) {
+      if (err) return console.error(err);
+      var port = address.port;
+      console.log('api server listening: http://localhost:' + port);
+      maybeStartPages(bfy, config, { address: address });
     });
-  });
-  return pagesApp;
-}
-
-function startPages (bfy, config, port, apiServerInfo) {
-  var pagesApp = initPages(bfy, config, apiServerInfo);
-  var pagesServer = pagesApp.listen(port);
-
-  pagesServer.once('listening', function() {
-    var port = pagesServer.address().port;
-    console.log('pages server listening: http://localhost:' + port);
-  });
-}
-
-function maybeStartPages (bfy, config, argv, apiServerInfo) {
-  if (argv.pages) startPages(bfy, config, argv.pages, apiServerInfo);
-}
-
-function initApi (config) {
-  var apiApp = restify.createServer();
-  if (config.initApi) {
-    config.initApi(apiApp, restify);
+  } else {
+    maybeStartPages(null);
   }
-  return apiApp;
-}
-
-function startApi (config, port, cb) {
-  var apiApp = initApi(config);
-  var apiServer = apiApp.listen(port);
-
-  apiServer.once('listening', function () {
-    var address = apiServer.address();
-    var port = address.port;
-    console.log('api server listening: http://localhost:' + port);
-    cb(null, address);
-  });
-}
-
-if (argv.api) startApi(config, argv.api, function (err, address) {
-  if (err) return console.error(err);
-  maybeStartPages(bfy, config, argv, { address: address });
-});
+};
