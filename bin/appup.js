@@ -37,6 +37,6 @@ appup({
     config: config
   // could be 'cwd' to make browserify pick up package.json info
   , entry: entry
-  , pages: pagesPort
-  , api: apiPort
+  , pagesPort: pagesPort
+  , apiPort: apiPort
 });
