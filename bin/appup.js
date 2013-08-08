@@ -24,7 +24,6 @@ if (argv.help) usageAndBail();
 var entry = argv._[0];
 
 if (!entry) {
-  // TODO: we could also find the 'browser' field in the cwd/package.json
   console.error('Please provide path to entry file as last argument');
   usageAndBail();
 }
