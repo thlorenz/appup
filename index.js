@@ -32,7 +32,7 @@ var go = module.exports = function (opts) {
 
   if (!pagesPort && !apiPort) throw new Error('Need to pass either pages or api port in order for me to start an app');
 
-  var bfy = config.browserify ? config.browserify() : browserify();
+  var bfy = config.initBrowserify ? config.initBrowserify(browserify) : browserify();
   var bundleOpts = config.bundleOpts || { insertGlobals: true, debug: true };
 
   var initPages = config.initPages || function () {};
