@@ -35,8 +35,11 @@ var go = module.exports = function (opts) {
   var bfy = config.initBrowserify ? config.initBrowserify(browserify) : browserify();
   var bundleOpts = config.bundleOpts || { insertGlobals: true, debug: true };
 
-  var initPages = config.initPages || function () {};
-  var initApi = config.initApi || function () {};
+  var initPages     =  config.initPages     || function () {};
+  var postInitPages =  config.postInitPages || function () {};
+  var initApi       =  config.initApi       || function () {};
+  var postInitApi   =  config.postInitApi   || function () {};
+  //TODO: postInits
 
   bfy.require(entry, { entry: true });
 
