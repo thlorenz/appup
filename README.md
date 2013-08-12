@@ -39,6 +39,48 @@ Options:
  */
 ```
 
+### config
+
+The config needs to provide either or all of the following properties on the module exports object:
+
+- **bundleOpts**: `{Object}` options passed to `browserify().bundle(options)`
+- **initBrowserify**: `{Function}` invoked with `browserify` that needs to return a browserify *instance* that can be
+  initialized according to our needs
+- **initPages** {Function} invoked with `(pagesApp, express, apiServerInfo)` where apiServerInfo is `{ address: {Object} }`
+- **postInitPages** {Function} invoked with `(pagesApp, pagesServer, express)` where `pagesServer` is the result of
+  `pagesApp.listen()`
+- **initApi** {Function} invoked with `(apiApp, restify)`
+- **postInitApi** {Function} invoked with `(apiApp, apiServer, restify)` where `apiServer` is the result of
+  `apiApp.listen()`
+
+#### Example config
+
+```js
+// Bundle options
+exports.bundleOpts = { debug: true, insertGlobals: false };
+
+exports.initBrowserify = function (browserify) {
+  return browserify().transform('hbsfy');
+};
+
+// Server options
+
+// Pages
+exports.initPages = function (pagesApp, express, apiServerInfo) {
+  pagesApp.use(core.renderViewMiddleware(viewPath, { title: 'core' }));
+};
+
+exports.postInitPages = function (pagesApp, pagesServer, express) {
+};
+
+// API 
+exports.initApi = function (apiApp, restify) {
+};
+
+exports.postInitApi = function (apiApp, apiServer, restify) {
+};
+```
+
 ## License
 
 MIT

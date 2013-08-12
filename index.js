@@ -45,7 +45,7 @@ var go = module.exports = function (opts) {
 
   function maybeStartPages (apiServerInfo) {
     if (pagesPort) {
-      startPages(bfy, bundleOpts, initPages, pagesPort, apiServerInfo, function (err, address) {
+      startPages(bfy, bundleOpts, initPages, postInitPages, pagesPort, apiServerInfo, function (err, address) {
         var port = address.port;
         console.log('pages server listening: http://localhost:' + port);
       });
@@ -54,7 +54,7 @@ var go = module.exports = function (opts) {
 
   // api server needst to be started before pages server in order to provide api server location to the latter
   if (apiPort) { 
-    startApi(initApi, apiPort, function (err, address) {
+    startApi(initApi, postInitApi, apiPort, function (err, address) {
       if (err) return console.error(err);
       var port = address.port;
       console.log('api server listening: http://localhost:' + port);
