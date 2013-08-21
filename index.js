@@ -1,13 +1,13 @@
 'use strict';
 
+var dynamicDedupe = require('dynamic-dedupe');
+
 var path = require('path');
 var optimist = require('optimist');
 var browserify = require('browserify');
-var dynamicDedupe = require('dynamic-dedupe');
 
 var startPages = require('./lib/start-pages');
 var startApi = require('./lib/start-api');
-
 
 /**
  * Creates browserify bundle and starts up pages server and/or api server according to the supplied options.
@@ -21,21 +21,21 @@ var startApi = require('./lib/start-api');
  * @param opts {Object} with the following properties
  *  - pages: port at which to start up pages server (optional)
  *  - api: port at which to start up api server (optional)
- *  - config: configuration provided to override browserify specific options and/or custom API/Pages servers init functions
+ *  - config: full path configuration provided to override browserify specific options and/or custom API/Pages servers init functions
  *  - entry: entry file to add to browserify
  *  - dedupe: turns on dynamic-dedupe
  */
 var go = module.exports = function (opts) {
 
-  var config    =  opts.config || {};
+  // ensure to turn dedupe on BEFORE requiring the entry
+  if (opts.dedupe) dynamicDedupe.activate(); 
+
+  var config    =  opts.config ? require(opts.config) : {};
   var pagesPort =  opts.pagesPort;
   var apiPort   =  opts.apiPort;
   var entry     =  opts.entry;
-  var dedupe    =  opts.dedupe;
 
   if (!pagesPort && !apiPort) throw new Error('Need to pass either pages or api port in order for me to start an app');
-
-  if (dedupe) dynamicDedupe.activate(); 
 
   var bfy = config.initBrowserify ? config.initBrowserify(browserify) : browserify();
   var bundleOpts = config.bundleOpts || { insertGlobals: true, debug: true };
@@ -44,7 +44,6 @@ var go = module.exports = function (opts) {
   var postInitPages =  config.postInitPages || function () {};
   var initApi       =  config.initApi       || function () {};
   var postInitApi   =  config.postInitApi   || function () {};
-  //TODO: postInits
 
   bfy.require(entry, { entry: true });
 

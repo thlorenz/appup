@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 'use strict';
+
 var optimist = require('optimist');
 var appup = require('../');
 var path = require('path');
@@ -30,7 +31,7 @@ if (!entry) {
   usageAndBail();
 }
 
-var config = argv.config ? require(path.join(cwd, argv.config)) : {};
+var config = path.join(cwd, argv.config); 
 var pagesPort = argv.pages;
 var apiPort = argv.api;
 var dedupe = !!argv.dedupe;
