@@ -15,6 +15,8 @@ Options:
   --pages   port to start pages server on
   --api     port to start api server on
   --config  point to a config file to override routes, etc. for the pages and api server
+  --dedupe  if set it will [dynamically dedupe](https://github.com/thlorenz/dynamic-dedupe) all modules as they are
+            being required to work around the fact that symlinks break `npm dedupe` 
 ```
 
 ## API
@@ -36,6 +38,7 @@ Options:
  *  - api: port at which to start up api server (optional)
  *  - config: configuration provided to override browserify specific options and/or custom API/Pages servers init functions
  *  - entry: entry file to add to browserify
+ *  - dedupe: turns on dynamic-dedupe
  */
 ```
 
