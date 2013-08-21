@@ -3,6 +3,7 @@
 var path = require('path');
 var optimist = require('optimist');
 var browserify = require('browserify');
+var dynamicDedupe = require('dynamic-dedupe');
 
 var startPages = require('./lib/start-pages');
 var startApi = require('./lib/start-api');
@@ -22,6 +23,7 @@ var startApi = require('./lib/start-api');
  *  - api: port at which to start up api server (optional)
  *  - config: configuration provided to override browserify specific options and/or custom API/Pages servers init functions
  *  - entry: entry file to add to browserify
+ *  - dedupe: turns on dynamic-dedupe
  */
 var go = module.exports = function (opts) {
 
@@ -29,8 +31,11 @@ var go = module.exports = function (opts) {
   var pagesPort =  opts.pagesPort;
   var apiPort   =  opts.apiPort;
   var entry     =  opts.entry;
+  var dedupe    =  opts.dedupe;
 
   if (!pagesPort && !apiPort) throw new Error('Need to pass either pages or api port in order for me to start an app');
+
+  if (dedupe) dynamicDedupe.activate(); 
 
   var bfy = config.initBrowserify ? config.initBrowserify(browserify) : browserify();
   var bundleOpts = config.bundleOpts || { insertGlobals: true, debug: true };
