@@ -13,10 +13,10 @@
   },
   "homepage": "https://github.com/thlorenz/appup",
   "dependencies": {
-    "express": "~3.3.4",
+    "express": "~3.3.8",
     "restify": "~2.6.0",
     "optimist": "~0.6.0",
-    "browserify": "~2.26.0"
+    "browserify": "~2.34.3"
   },
   "devDependencies": {
     "tap": "~0.4.3"
