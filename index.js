@@ -44,6 +44,7 @@ var go = module.exports = function (opts) {
   var postInitPages =  config.postInitPages || function () {};
   var initApi       =  config.initApi       || function () {};
   var postInitApi   =  config.postInitApi   || function () {};
+  var events        =  config.events        || null;
 
   bfy.require(entry, { entry: true });
 
@@ -51,7 +52,8 @@ var go = module.exports = function (opts) {
     if (pagesPort) {
       startPages(bfy, bundleOpts, initPages, postInitPages, pagesPort, apiServerInfo, function (err, address) {
         var port = address.port;
-        console.log('pages server listening: http://localhost:' + port);
+        var msg = 'pages server listening: http://localhost:' + port;
+        if(events) events.emit('info', msg); else console.log(msg);
       });
     }
   }
@@ -59,9 +61,11 @@ var go = module.exports = function (opts) {
   // api server needst to be started before pages server in order to provide api server location to the latter
   if (apiPort) { 
     startApi(initApi, postInitApi, apiPort, function (err, address) {
-      if (err) return console.error(err);
+      if (err) return events ? events.emit('error', err) : console.error(err);
+
       var port = address.port;
-      console.log('api server listening: http://localhost:' + port);
+      var msg = 'api server listening: http://localhost:' + port;
+      if(events) events.emit('info', msg); else console.log(msg);
       maybeStartPages({ address: address });
     });
   } else {

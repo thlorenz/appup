@@ -55,6 +55,8 @@ The config needs to provide either or all of the following properties on the mod
 - **initApi** {Function} invoked with `(apiApp, restify)`
 - **postInitApi** {Function} invoked with `(apiApp, apiServer, restify)` where `apiServer` is the result of
   `apiApp.listen()`
+- **emitter** {EventEmitter} used to emit `info` and `error` events, if not provided messages are logged to the console
+  instead
 
 #### Example config
 
