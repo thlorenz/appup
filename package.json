@@ -1,6 +1,6 @@
 {
   "name": "appup",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "CLI to launch apps that use an express main server and an optional restif api server.",
   "main": "index.js",
   "bin": "./bin/appup.js",
