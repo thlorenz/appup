@@ -18,12 +18,12 @@ var startApi = require('./lib/start-api');
  * 
  * @name exports
  * @function
- * @param opts {Object} with the following properties
- *  - pages: port at which to start up pages server (optional)
- *  - api: port at which to start up api server (optional)
- *  - config: full path configuration provided to override browserify specific options and/or custom API/Pages servers init functions
- *  - entry: entry file to add to browserify
- *  - dedupe: turns on dynamic-dedupe
+ * @param opts {Object} 
+ * @param {number}  opts.pages:   port at which to start up pages server (optional)
+ * @param {number}  opts.api:     port at which to start up api server (optional)
+ * @param {string}  opts.config:  full path configuration provided to override browserify specific options and/or custom API/Pages servers init functions
+ * @param {string}  opts.entry:   entry file to add to browserify
+ * @param {boolean} opts.dedupe:  turns on dynamic-dedupe
  */
 var go = module.exports = function (opts) {
 
@@ -50,7 +50,7 @@ var go = module.exports = function (opts) {
 
   function maybeStartPages (apiServerInfo) {
     if (pagesPort) {
-      startPages(bfy, bundleOpts, initPages, postInitPages, pagesPort, apiServerInfo, function (err, address) {
+      startPages(bfy, bundleOpts, initPages, postInitPages, pagesPort, apiServerInfo, events, function (err, address) {
         var port = address.port;
         var msg = 'pages server listening: http://localhost:' + port;
         if(events) events.emit('info', msg); else console.log(msg);
