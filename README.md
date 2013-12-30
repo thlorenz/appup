@@ -65,42 +65,56 @@ If neither port is given, an error is thrown.</p>
 <tr>
 <th>Name</th>
 <th>Type</th>
+<th>Argument</th>
 <th class="last">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="name"><code>pages:</code></td>
+<td class="name"><code>pages</code></td>
 <td class="type">
 <span class="param-type">number</span>
 </td>
-<td class="description last"><p>port at which to start up pages server (optional)</p></td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>port at which to start up pages server</p></td>
 </tr>
 <tr>
-<td class="name"><code>api:</code></td>
+<td class="name"><code>api</code></td>
 <td class="type">
 <span class="param-type">number</span>
 </td>
-<td class="description last"><p>port at which to start up api server (optional)</p></td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>port at which to start up api server</p></td>
 </tr>
 <tr>
-<td class="name"><code>config:</code></td>
+<td class="name"><code>config</code></td>
 <td class="type">
 <span class="param-type">string</span>
+</td>
+<td class="attributes">
 </td>
 <td class="description last"><p>full path configuration provided to override browserify specific options and/or custom API/Pages servers init functions</p></td>
 </tr>
 <tr>
-<td class="name"><code>entry:</code></td>
+<td class="name"><code>entry</code></td>
 <td class="type">
 <span class="param-type">string</span>
+</td>
+<td class="attributes">
 </td>
 <td class="description last"><p>entry file to add to browserify</p></td>
 </tr>
 <tr>
-<td class="name"><code>dedupe:</code></td>
+<td class="name"><code>dedupe</code></td>
 <td class="type">
 <span class="param-type">boolean</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
 </td>
 <td class="description last"><p>turns on dynamic-dedupe</p></td>
 </tr>

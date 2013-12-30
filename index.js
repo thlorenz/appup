@@ -19,11 +19,11 @@ var startApi = require('./lib/start-api');
  * @name appup
  * @function
  * @param opts {Object} 
- * @param {number}  opts.pages:   port at which to start up pages server (optional)
- * @param {number}  opts.api:     port at which to start up api server (optional)
- * @param {string}  opts.config:  full path configuration provided to override browserify specific options and/or custom API/Pages servers init functions
- * @param {string}  opts.entry:   entry file to add to browserify
- * @param {boolean} opts.dedupe:  turns on dynamic-dedupe
+ * @param {number=}  opts.pages   port at which to start up pages server
+ * @param {number=}  opts.api     port at which to start up api server
+ * @param {string}   opts.config  full path configuration provided to override browserify specific options and/or custom API/Pages servers init functions
+ * @param {string}   opts.entry   entry file to add to browserify
+ * @param {boolean=} opts.dedupe  turns on dynamic-dedupe
  */
 var go = module.exports = function appup(opts) {
 
