@@ -16,7 +16,7 @@ var startApi = require('./lib/start-api');
  * If no pages port is given, the pages server is not started up.
  * If neither port is given, an error is thrown.
  * 
- * @name exports
+ * @name appup
  * @function
  * @param opts {Object} 
  * @param {number}  opts.pages:   port at which to start up pages server (optional)
@@ -25,7 +25,7 @@ var startApi = require('./lib/start-api');
  * @param {string}  opts.entry:   entry file to add to browserify
  * @param {boolean} opts.dedupe:  turns on dynamic-dedupe
  */
-var go = module.exports = function (opts) {
+var go = module.exports = function appup(opts) {
 
   // ensure to turn dedupe on BEFORE requiring the entry
   if (opts.dedupe) dynamicDedupe.activate(); 

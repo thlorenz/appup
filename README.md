@@ -34,7 +34,7 @@ Options:
 </div>
 <dl>
 <dt>
-<h4 class="name" id="exports"><span class="type-signature"></span>exports<span class="signature">(opts)</span><span class="type-signature"></span></h4>
+<h4 class="name" id="appup"><span class="type-signature"></span>appup<span class="signature">(opts)</span><span class="type-signature"></span></h4>
 </dt>
 <dd>
 <div class="description">
