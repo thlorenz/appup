@@ -13,7 +13,8 @@ var argv = optimist
   .describe('pages', 'port to start pages server on')
   .describe('api', 'port to start api server on')
   .describe('config', 'point to a config file to override routes, etc. for the pages and api server')
-  .describe('dedupe', 'port to start pages server on')
+  .describe('watchdir', 'directory to watch for client side JavaScript changes in order to automatically refresh')
+  .describe('dedupe', 'if set it will [dynamically dedupe](https://github.com/thlorenz/dynamic-dedupe)\n\t      all modules as they are being required to work around the fact that symlinks break `npm dedupe`')
   .boolean('dedupe')
   .argv;
 
@@ -35,11 +36,13 @@ var config = path.join(cwd, argv.config);
 var pagesPort = argv.pages;
 var apiPort = argv.api;
 var dedupe = !!argv.dedupe;
+var watchdir = argv.watchdir && path.resolve(argv.watchdir);
 
 appup({
-    config    : config
+    config    :  config
   , entry     :  entry
   , pagesPort :  pagesPort
   , apiPort   :  apiPort
+  , watchdir  :  watchdir
   , dedupe    :  dedupe
 });

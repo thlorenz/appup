@@ -18,12 +18,13 @@ var startApi = require('./lib/start-api');
  * 
  * @name appup
  * @function
- * @param opts {Object} 
- * @param {number=}  opts.pages   port at which to start up pages server
- * @param {number=}  opts.api     port at which to start up api server
- * @param {string}   opts.config  full path configuration provided to override browserify specific options and/or custom API/Pages servers init functions
- * @param {string}   opts.entry   entry file to add to browserify
- * @param {boolean=} opts.dedupe  turns on dynamic-dedupe
+ * @param {Object}   opts 
+ * @param {number=}  opts.pages     port at which to start up pages server
+ * @param {number=}  opts.api       port at which to start up api server
+ * @param {string}   opts.config    full path configuration provided to override browserify specific options and/or custom API/Pages servers init functions
+ * @param {string}   opts.entry     entry file to add to browserify
+ * @param {string=}  opts.watchdir  turns on live reload for the given directory 
+ * @param {boolean=} opts.dedupe    turns on dynamic-dedupe
  */
 var go = module.exports = function appup(opts) {
 
@@ -50,11 +51,22 @@ var go = module.exports = function appup(opts) {
 
   function maybeStartPages (apiServerInfo) {
     if (pagesPort) {
-      startPages(bfy, bundleOpts, initPages, postInitPages, pagesPort, apiServerInfo, events, function (err, address) {
-        var port = address.port;
-        var msg = 'pages server listening: http://localhost:' + port;
-        if(events) events.emit('info', msg); else console.log(msg);
-      });
+      startPages(
+          { bfy            :  bfy
+          , bundleOpts     :  bundleOpts
+          , customInit     :  initPages
+          , customPostInit :  postInitPages
+          , port           :  pagesPort
+          , apiServerInfo  :  apiServerInfo
+          , watchdir       :  opts.watchdir
+          , events         :  events
+          }
+        , function (err, address) {
+            var port = address.port;
+            var msg = 'pages server listening: http://localhost:' + port;
+            if(events) events.emit('info', msg); else console.log(msg);
+          }
+      );
     }
   }
 
@@ -65,7 +77,7 @@ var go = module.exports = function appup(opts) {
 
       var port = address.port;
       var msg = 'api server listening: http://localhost:' + port;
-      if(events) events.emit('info', msg); else console.log(msg);
+      if (events) events.emit('info', msg); else console.log(msg);
       maybeStartPages({ address: address });
     });
   } else {
