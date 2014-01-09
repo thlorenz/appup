@@ -23,7 +23,8 @@
     "browserify": "~3.19.0"
   },
   "devDependencies": {
-    "tap": "~0.4.3"
+    "tap": "~0.4.3",
+    "through2": "~0.3.0"
   },
   "keywords": [
     "launch",
