@@ -1,4 +1,4 @@
-# appup
+# appup [![build status](https://secure.travis-ci.org/thlorenz/appup.png?branch=master)](http://travis-ci.org/thlorenz/appup)
 
 CLI to launch apps that use an express main server and an optional restif api server.
 
