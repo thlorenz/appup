@@ -1,13 +1,12 @@
 'use strict';
 
-var dynamicDedupe = require('dynamic-dedupe');
-
-var path = require('path');
+var path     = require('path');
 var optimist = require('optimist');
-var browserify = require('browserify');
+var fork     = require('child_process').fork;
 
-var startPages = require('./lib/start-pages');
-var startApi = require('./lib/start-api');
+var pagesMaster   = require('./lib/pages/master')
+  , apiMaster     = require('./lib/api/master')
+  , apiForkScript = require.resolve('./lib/api/fork');
 
 /**
  * Creates browserify bundle and starts up pages server and/or api server according to the supplied options.
@@ -19,8 +18,9 @@ var startApi = require('./lib/start-api');
  * @name appup
  * @function
  * @param {Object}   opts 
- * @param {number=}  opts.pages     port at which to start up pages server
- * @param {number=}  opts.api       port at which to start up api server
+ * @param {number=}  opts.pagesPort port at which to start up pages server
+ * @param {number=}  opts.apiPort   port at which to start up api server
+ * @param {string=}  opts.apiHost   specifies where api server is hosted default(http://localhost)
  * @param {string}   opts.config    full path configuration provided to override browserify specific options and/or custom API/Pages servers init functions
  * @param {string}   opts.entry     entry file to add to browserify
  * @param {string=}  opts.watchdir  turns on live reload for the given directory 
@@ -28,59 +28,23 @@ var startApi = require('./lib/start-api');
  */
 var go = module.exports = function appup(opts) {
 
-  // ensure to turn dedupe on BEFORE requiring the entry
-  if (opts.dedupe) dynamicDedupe.activate(); 
-
-  var config    =  opts.config ? require(opts.config) : {};
   var pagesPort =  opts.pagesPort;
   var apiPort   =  opts.apiPort;
-  var entry     =  opts.entry;
+  var apiHost   =  opts.apiHost || 'http://locahost';
+
+  var apiProcess, pagesCluster, apiCluster;
 
   if (!pagesPort && !apiPort) throw new Error('Need to pass either pages or api port in order for me to start an app');
 
-  var bfy = config.initBrowserify ? config.initBrowserify(browserify) : browserify();
-  var bundleOpts = config.bundleOpts || { insertGlobals: true, debug: true };
-
-  var initPages     =  config.initPages     || function () {};
-  var postInitPages =  config.postInitPages || function () {};
-  var initApi       =  config.initApi       || function () {};
-  var postInitApi   =  config.postInitApi   || function () {};
-  var events        =  config.events        || null;
-
-  bfy.require(entry, { entry: true });
-
-  function maybeStartPages (apiServerInfo) {
-    if (pagesPort) {
-      startPages(
-          { bfy            :  bfy
-          , bundleOpts     :  bundleOpts
-          , customInit     :  initPages
-          , customPostInit :  postInitPages
-          , port           :  pagesPort
-          , apiServerInfo  :  apiServerInfo
-          , watchdir       :  opts.watchdir
-          , events         :  events
-          }
-        , function (err, address) {
-            var port = address.port;
-            var msg = 'pages server listening: http://localhost:' + port;
-            if(events) events.emit('info', msg); else console.log(msg);
-          }
-      );
-    }
+  // TODO: propagate api info to pages-start
+  if (apiPort && pagesPort) {
+    apiProcess = fork(apiForkScript, [], { env: { appup_api_fork_opts: JSON.stringify(opts) } });
+    pagesCluster = pagesMaster(opts);
+  } else if (apiPort) { 
+    apiCluster = apiMaster(opts);
+  } else if (pagesPort) {
+    pagesCluster = pagesMaster(opts);
   }
 
-  // api server needst to be started before pages server in order to provide api server location to the latter
-  if (apiPort) { 
-    startApi(initApi, postInitApi, apiPort, function (err, address) {
-      if (err) return events ? events.emit('error', err) : console.error(err);
-
-      var port = address.port;
-      var msg = 'api server listening: http://localhost:' + port;
-      if (events) events.emit('info', msg); else console.log(msg);
-      maybeStartPages({ address: address });
-    });
-  } else {
-    maybeStartPages(null);
-  }
+  return { pagesCluster: pagesCluster, apiCluster: apiCluster, apiProcess: apiProcess };
 };

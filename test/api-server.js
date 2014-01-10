@@ -2,9 +2,10 @@
 /*jshint asi: true */
 
 var test       =  require('tap').test
-var startApi   =  require('../lib/start-api');
+var startApi   =  require('../lib/api/start');
 var http       =  require('http');
 var through    =  require('through2');
+var EE         =  require('events').EventEmitter;
 
 function inspect(obj, depth) {
   console.error(require('util').inspect(obj, false, depth || 5, true));
@@ -12,6 +13,7 @@ function inspect(obj, depth) {
 
 test('\napi server initialization', function (t) {
 
+  var events = new EE();
   var initIdx = 0;
   var initedWith;
   var postInitedWith;
@@ -27,16 +29,17 @@ test('\napi server initialization', function (t) {
   var opts = {
       customInit     :  initPages
     , customPostInit :  postInitPages
-    , port           :  5555
+    , port           :  5002
+    , events         :  events
   }
 
-  var server = startApi(opts.customInit, opts.customPostInit, opts.port, function (err, address) {
+  var server = startApi(opts, function (err, address) {
     if (err) { t.fail(err); return t.end(); }
     t.deepEqual(
         address
       , { address: '0.0.0.0',
         family: 'IPv4',
-        port: 5555 }
+        port: opts.port }
       , 'calls back with addrinfo'
     )
 

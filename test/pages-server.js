@@ -4,7 +4,7 @@
 var test       =  require('tap').test
 var browserify =  require('browserify');
 var express    =  require('express');
-var startPages =  require('../lib/start-pages');
+var startPages =  require('../lib/pages/start');
 var EE         =  require('events').EventEmitter;
 var http       =  require('http');
 var through    =  require('through2');
@@ -34,7 +34,7 @@ test('\npages server initialization', function (t) {
       bfy            :  browserify()
     , customInit     :  initPages
     , customPostInit :  postInitPages
-    , port           :  5555
+    , port           :  5005
     , apiServerInfo  :  { port:  'some port' }
     , events         :  events
   }
@@ -47,7 +47,7 @@ test('\npages server initialization', function (t) {
         address
       , { address: '0.0.0.0',
         family: 'IPv4',
-        port: 5555 }
+        port: opts.port }
       , 'calls back with addrinfo'
     )
 
@@ -85,7 +85,7 @@ test('\npages server bundling no error', function (t) {
       bfy            :  browserify()
     , customInit     :  noop
     , customPostInit :  noop
-    , port           :  5555
+    , port           :  5006
     , apiServerInfo  :  { port:  'some port' }
     , events         :  events
   }
@@ -127,10 +127,10 @@ test('\npages server bundling with errors', function (t) {
   function noop() {}
 
   var opts = {
-      bfy            :  browserify().require(require.resolve('./fixtures/module-with-errors.js'))
+      bfy            :  browserify().require(require.resolve('./pages-server/module-with-errors.js'))
     , customInit     :  noop
     , customPostInit :  noop
-    , port           :  5555
+    , port           :  5007
     , apiServerInfo  :  { port:  'some port' }
     , events         :  events
   }
