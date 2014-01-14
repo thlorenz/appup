@@ -17,7 +17,7 @@ function shutdown(cluster) {
 test('\napi handles valid requests', function (t) {
   
   var opts = {
-      apiPort: 5000
+      apiPort: 5008
     , config: require.resolve('./api-doesnt-crash/appup-config')
   }
 
@@ -46,7 +46,7 @@ test('\napi handles valid requests', function (t) {
 test('\npages do not crash when request causes async error', function (t) {
   
   var opts = {
-      apiPort: 5001
+      apiPort: 5009
     , config: require.resolve('./api-doesnt-crash/appup-config')
   }
 
