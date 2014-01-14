@@ -10,12 +10,19 @@ var cwd = process.cwd();
 
 var argv = optimist
   .usage('appup [options] file')
-  .describe('pages', 'port to start pages server on')
-  .describe('api', 'port to start api server on')
-  .describe('config', 'point to a config file to override routes, etc. for the pages and api server')
-  .describe('watchdir', 'directory to watch for client side JavaScript changes in order to automatically refresh')
-  .describe('dedupe', 'if set it will [dynamically dedupe](https://github.com/thlorenz/dynamic-dedupe)\n\t      all modules as they are being required to work around the fact that symlinks break `npm dedupe`')
-  .boolean('dedupe')
+
+  .describe('pages'    , 'port to start pages server on')
+  .describe('watchdir' , 'directory to watch for client side JavaScript changes in order to automatically refresh')
+  .describe('dedupe'   , 'if set it will [dynamically dedupe] (https://github.com/thlorenz/dynamic-dedupe)\n\t all modules as they are being required to work around the fact that symlinks break `npm dedupe`')
+
+  .describe('api'      , 'port to start api server on')
+  .describe('apihost'  , 'address at which api server is hosted')
+
+  .describe('config'   , 'point to a config file to override routes, etc. for the pages and api server')
+
+  .default ('apihost'  , 'localhost')
+  .boolean ('dedupe')
+
   .argv;
 
 function usageAndBail () {
@@ -43,6 +50,7 @@ appup({
   , entry     :  entry
   , pagesPort :  pagesPort
   , apiPort   :  apiPort
+  , apiHost   :  argv.apihost
   , watchdir  :  watchdir
   , dedupe    :  dedupe
 });

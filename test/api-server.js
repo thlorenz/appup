@@ -38,8 +38,8 @@ test('\napi server initialization', function (t) {
     t.deepEqual(
         address
       , { address: '0.0.0.0',
-        family: 'IPv4',
-        port: opts.port }
+          family: 'IPv4',
+          port: opts.port }
       , 'calls back with addrinfo'
     )
 

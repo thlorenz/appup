@@ -20,7 +20,7 @@ var pagesMaster   = require('./lib/pages/master')
  * @param {Object}   opts 
  * @param {number=}  opts.pagesPort port at which to start up pages server
  * @param {number=}  opts.apiPort   port at which to start up api server
- * @param {string=}  opts.apiHost   specifies where api server is hosted default(http://localhost)
+ * @param {string=}  opts.apiHost   specifies where api server is hosted (default: 'localhost')
  * @param {string}   opts.config    full path configuration provided to override browserify specific options and/or custom API/Pages servers init functions
  * @param {string}   opts.entry     entry file to add to browserify
  * @param {string=}  opts.watchdir  turns on live reload for the given directory 
@@ -30,13 +30,12 @@ var go = module.exports = function appup(opts) {
 
   var pagesPort =  opts.pagesPort;
   var apiPort   =  opts.apiPort;
-  var apiHost   =  opts.apiHost || 'http://locahost';
+  var apiHost   =  opts.apiHost || 'localhost';
 
   var apiProcess, pagesCluster, apiCluster;
 
   if (!pagesPort && !apiPort) throw new Error('Need to pass either pages or api port in order for me to start an app');
 
-  // TODO: propagate api info to pages-start
   if (apiPort && pagesPort) {
     apiProcess = fork(apiForkScript, [], { env: { appup_api_fork_opts: JSON.stringify(opts) } });
     pagesCluster = pagesMaster(opts);

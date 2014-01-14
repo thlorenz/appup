@@ -13,11 +13,12 @@ appup [options] file
 
 Options:
   --pages     port to start pages server on
-  --api       port to start api server on
-  --config    point to a config file to override routes, etc. for the pages and api server
   --watchdir  directory to watch for client side JavaScript changes in order to automatically refresh
-  --dedupe    if set it will [dynamically dedupe](https://github.com/thlorenz/dynamic-dedupe)
-      	      all modules as they are being required to work around the fact that symlinks break `npm dedupe`
+  --dedupe    if set it will [dynamically dedupe] (https://github.com/thlorenz/dynamic-dedupe)
+	            all modules as they are being required to work around the fact that symlinks break `npm dedupe`
+  --api       port to start api server on
+  --apihost   address at which api server is hosted [default: "localhost"]
+  --config    point to a config file to override routes, etc. for the pages and api server
 ```
 
 ## API
@@ -72,7 +73,7 @@ If neither port is given, an error is thrown.</p>
 </thead>
 <tbody>
 <tr>
-<td class="name"><code>pages</code></td>
+<td class="name"><code>pagesPort</code></td>
 <td class="type">
 <span class="param-type">number</span>
 </td>
@@ -82,7 +83,7 @@ If neither port is given, an error is thrown.</p>
 <td class="description last"><p>port at which to start up pages server</p></td>
 </tr>
 <tr>
-<td class="name"><code>api</code></td>
+<td class="name"><code>apiPort</code></td>
 <td class="type">
 <span class="param-type">number</span>
 </td>
@@ -90,6 +91,16 @@ If neither port is given, an error is thrown.</p>
 &lt;optional><br>
 </td>
 <td class="description last"><p>port at which to start up api server</p></td>
+</tr>
+<tr>
+<td class="name"><code>apiHost</code></td>
+<td class="type">
+<span class="param-type">string</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>specifies where api server is hosted (default: 'localhost')</p></td>
 </tr>
 <tr>
 <td class="name"><code>config</code></td>
@@ -141,7 +152,7 @@ If neither port is given, an error is thrown.</p>
 <li>
 <a href="https://github.com/thlorenz/appup/blob/master/index.js">index.js</a>
 <span>, </span>
-<a href="https://github.com/thlorenz/appup/blob/master/index.js#L12">lineno 12</a>
+<a href="https://github.com/thlorenz/appup/blob/master/index.js#L11">lineno 11</a>
 </li>
 </ul></dd>
 </dl>
