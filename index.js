@@ -3,6 +3,7 @@
 var path     = require('path');
 var optimist = require('optimist');
 var fork     = require('child_process').fork;
+var xtend    = require('xtend');
 
 var pagesMaster   = require('./lib/pages/master')
   , apiMaster     = require('./lib/api/master')
@@ -37,7 +38,11 @@ var go = module.exports = function appup(opts) {
   if (!pagesPort && !apiPort) throw new Error('Need to pass either pages or api port in order for me to start an app');
 
   if (apiPort && pagesPort) {
-    apiProcess = fork(apiForkScript, [], { env: { appup_api_fork_opts: JSON.stringify(opts) } });
+    apiProcess = fork(
+        apiForkScript
+      , process.argv 
+      , { env: xtend(process.env, { appup_api_fork_opts: JSON.stringify(opts) }) }
+    );
     pagesCluster = pagesMaster(opts);
   } else if (apiPort) { 
     apiCluster = apiMaster(opts);
