@@ -1,5 +1,9 @@
 'use strict';
 
+function inspect(obj, depth) {
+  console.error(require('util').inspect(obj, false, depth || 5, true));
+}
+
 function okPagesRoute(req, res) {
   res.send(200, '<h2>All good</2>');
   res.end();
@@ -25,7 +29,8 @@ exports.initPages = function (app, express, apiServerInfo) {
   app.get('/no', notOkPagesRoute);
 };
 
-exports.pagesSend500 = function (req, res) {
+exports.pagesSend500 = function (req, res, err) {
+  inspect(err.stack.split('\n'));
   res.setHeader('content-type', 'text/plain');
   res.end('pages don\'t really care dude\n');
 };
@@ -35,7 +40,8 @@ exports.initApi = function (app, restify) {
   app.get('/no', notOkApiRoute);
 };
 
-exports.apiSend500 = function (req, res) {
+exports.apiSend500 = function (req, res, err) {
+  inspect(err.stack.split('\n'));
   res.setHeader('content-type', 'text/plain');
   res.end('api doesn\'t really care dude\n');
 };

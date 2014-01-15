@@ -183,12 +183,12 @@ The config needs to provide either or all of the following properties on the mod
 - **initPages** {Function} invoked with `(pagesApp, express, apiServerInfo)` where apiServerInfo is `{ host: {string}, port: {number} }`
 - **postInitPages** {Function} invoked with `(pagesApp, pagesServer, express)` where `pagesServer` is the result of
   `pagesApp.listen()`
-- **pagesSend500** {Function} invoked with `(req, res)` to allow responding with a 500 error before worker gets taken
+- **pagesSend500** {Function} invoked with `(req, res, err)` to allow responding with a 500 error before worker gets taken
   offline and another one is launched 
 - **initApi** {Function} invoked with `(apiApp, restify)`
 - **postInitApi** {Function} invoked with `(apiApp, apiServer, restify)` where `apiServer` is the result of
   `apiApp.listen()`
-- **apiSend500** {Function} invoked with `(req, res)` to allow responding with a 500 error before worker gets taken
+- **apiSend500** {Function} invoked with `(req, res, err)` to allow responding with a 500 error before worker gets taken
   offline and another one is launched 
 - **events** {EventEmitter} used to emit `info` and `error` events, if not provided messages are logged to the console
   instead
