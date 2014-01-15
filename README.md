@@ -2,6 +2,13 @@
 
 CLI to launch apps that use an express main server and an optional restif api server.
 
+Servers are **super stable** with the help of [domains](http://nodejs.org/api/domain.html) and the [cluster module](http://nodejs.org/api/cluster.html).
+This means in practice that **when a request causes an unhandled error a `500` response is sent, the server shut down**
+**gracefully and a new one spun up**. 
+
+Two servers are spun up originally for each port, so that **while one is restarted, the other one keeps servicing incoming requests**.
+
+
 ## Installation
 
     npm install appup
