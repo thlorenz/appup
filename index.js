@@ -43,6 +43,15 @@ var go = module.exports = function appup(opts) {
       , process.argv 
       , { env: xtend(process.env, { appup_api_fork_opts: JSON.stringify(opts) }) }
     );
+
+    // ensure proper shutdown of forked child - was an issue without this when using supervisor
+    var onSIGTERM = function() { 
+      apiProcess.kill('SIGTERM');
+      process.removeListener('SIGTERM', onSIGTERM);
+      process.exit(0);
+    }
+    process.on('SIGTERM', onSIGTERM);
+
     pagesCluster = pagesMaster(opts);
   } else if (apiPort) { 
     apiCluster = apiMaster(opts);
