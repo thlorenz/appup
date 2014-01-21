@@ -34,6 +34,7 @@
     "express",
     "restify",
     "browserify",
+    "browserify-tool",
     "pages",
     "api"
   ],
