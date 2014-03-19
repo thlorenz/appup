@@ -18,6 +18,8 @@ var argv = optimist
   .describe('api'      , 'port to start api server on')
   .describe('apihost'  , 'address at which api server is hosted')
 
+  .describe('tunnel'   , 'sets up local tunnel pointing to pages port and logs url to connect to from remote client')
+
   .describe('config'   , 'point to a config file to override routes, etc. for the pages and api server')
 
   .default ('apihost'  , 'localhost')
@@ -51,6 +53,7 @@ appup({
   , pagesPort :  pagesPort
   , apiPort   :  apiPort
   , apiHost   :  argv.apihost
+  , tunnel    :  argv.tunnel
   , watchdir  :  watchdir
   , dedupe    :  dedupe
 });

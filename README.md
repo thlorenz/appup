@@ -25,6 +25,7 @@ Options:
 	            all modules as they are being required to work around the fact that symlinks break `npm dedupe`
   --api       port to start api server on
   --apihost   address at which api server is hosted [default: "localhost"]
+  --tunnel    sets up local tunnel pointing to pages port and logs url to connect to from remote client
   --config    point to a config file to override routes, etc. for the pages and api server
 ```
 
@@ -108,6 +109,16 @@ If neither port is given, an error is thrown.</p>
 &lt;optional><br>
 </td>
 <td class="description last"><p>specifies where api server is hosted (default: 'localhost')</p></td>
+</tr>
+<tr>
+<td class="name"><code>tunnel</code></td>
+<td class="type">
+<span class="param-type">boolean</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>sets up local tunnel pointing to @see opts.pagesPort and logs url to connect to from remote client</p></td>
 </tr>
 <tr>
 <td class="name"><code>config</code></td>

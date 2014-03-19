@@ -22,7 +22,8 @@
     "watchr": "~2.4.8",
     "browserify": "~3.19.0",
     "cuid": "~1.2.1",
-    "xtend": "~2.1.2"
+    "xtend": "~2.1.2",
+    "localtunnel": "^1.1.0"
   },
   "devDependencies": {
     "tap": "~0.4.3",

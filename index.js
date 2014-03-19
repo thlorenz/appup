@@ -1,13 +1,28 @@
 'use strict';
 
-var path     = require('path');
-var optimist = require('optimist');
-var fork     = require('child_process').fork;
-var xtend    = require('xtend');
+var path        = require('path');
+var optimist    = require('optimist');
+var fork        = require('child_process').fork;
+var xtend       = require('xtend');
+var localtunnel = require('localtunnel');
 
 var pagesMaster   = require('./lib/pages/master')
   , apiMaster     = require('./lib/api/master')
   , apiForkScript = require.resolve('./lib/api/fork');
+
+function setupLocalTunnel(opts) {
+  var config = opts.config ? require(opts.config) : {}
+    , events = config.events;
+
+  localtunnel(opts.pagesPort, function (err, tunnel) {
+    if (err) {
+      if (events) events.emit('error', err); else console.error(err);
+    } else {
+      var msg = 'tunnel url: ' + tunnel.url;
+      if (events) events.emit('info', msg); else console.error(msg);
+    }
+  })
+}
 
 /**
  * Creates browserify bundle and starts up pages server and/or api server according to the supplied options.
@@ -26,6 +41,7 @@ var pagesMaster   = require('./lib/pages/master')
  * @param {string}   opts.entry     entry file to add to browserify
  * @param {string=}  opts.watchdir  turns on live reload for the given directory 
  * @param {boolean=} opts.dedupe    turns on dynamic-dedupe
+ * @param {boolean=} opts.tunnel    sets up local tunnel pointing to @see opts.pagesPort and logs url to connect to from remote client
  */
 var go = module.exports = function appup(opts) {
 
@@ -58,6 +74,8 @@ var go = module.exports = function appup(opts) {
   } else if (pagesPort) {
     pagesCluster = pagesMaster(opts);
   }
+
+  if (opts.tunnel) setupLocalTunnel(opts);
 
   return { pagesCluster: pagesCluster, apiCluster: apiCluster, apiProcess: apiProcess };
 };
