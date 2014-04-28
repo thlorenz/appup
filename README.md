@@ -178,7 +178,7 @@ If neither port is given, an error is thrown.</p>
 <dl class="details">
 <dt class="tag-source">Source:</dt>
 <dd class="tag-source"><ul class="dummy"><li>
-<a href="index.js.html">index.js</a>, <a href="index.js.html#line65">line 65</a>
+<a href="index.js">index.js</a>, <a href="index.js#line65">line 65</a>
 </li></ul></dd>
 </dl>
 </dd>
