@@ -54,6 +54,7 @@ appup({
   , apiPort   :  apiPort
   , apiHost   :  argv.apihost
   , tunnel    :  argv.tunnel
+  , nocluster :  argv.nocluster
   , watchdir  :  watchdir
   , dedupe    :  dedupe
 });
