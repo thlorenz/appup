@@ -19,14 +19,15 @@ Two servers are spun up originally for each port, so that **while one is restart
 appup [options] file
 
 Options:
-  --pages     port to start pages server on
-  --watchdir  directory to watch for client side JavaScript changes in order to automatically refresh
-  --dedupe    if set it will [dynamically dedupe] (https://github.com/thlorenz/dynamic-dedupe)
-	            all modules as they are being required to work around the fact that symlinks break `npm dedupe`
-  --api       port to start api server on
-  --apihost   address at which api server is hosted [default: "localhost"]
-  --tunnel    sets up local tunnel pointing to pages port and logs url to connect to from remote client
-  --config    point to a config file to override routes, etc. for the pages and api server
+  --pages      port to start pages server on
+  --watchdir   directory to watch for client side JavaScript changes in order to automatically refresh
+  --dedupe     if set it will [dynamically dedupe] (https://github.com/thlorenz/dynamic-dedupe)
+	             all modules as they are being required to work around the fact that symlinks break `npm dedupe`
+  --api        port to start api server on
+  --apihost    address at which api server is hosted [default: "localhost"]
+  --tunnel     sets up local tunnel pointing to pages port and logs url to connect to from remote client
+  --config     point to a config file to override routes, etc. for the pages and api server
+  --nocluster  if set, single servers are launched instead of a cluster of them, which maybe preferred during development
 ```
 
 ## API
@@ -111,16 +112,6 @@ If neither port is given, an error is thrown.</p>
 <td class="description last"><p>specifies where api server is hosted (default: 'localhost')</p></td>
 </tr>
 <tr>
-<td class="name"><code>tunnel</code></td>
-<td class="type">
-<span class="param-type">boolean</span>
-</td>
-<td class="attributes">
-&lt;optional><br>
-</td>
-<td class="description last"><p>sets up local tunnel pointing to @see opts.pagesPort and logs url to connect to from remote client</p></td>
-</tr>
-<tr>
 <td class="name"><code>config</code></td>
 <td class="type">
 <span class="param-type">string</span>
@@ -158,6 +149,26 @@ If neither port is given, an error is thrown.</p>
 </td>
 <td class="description last"><p>turns on dynamic-dedupe</p></td>
 </tr>
+<tr>
+<td class="name"><code>tunnel</code></td>
+<td class="type">
+<span class="param-type">boolean</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>sets up local tunnel pointing to @see opts.pagesPort and logs url to connect to from remote client</p></td>
+</tr>
+<tr>
+<td class="name"><code>nocluster</code></td>
+<td class="type">
+<span class="param-type">boolean</span>
+</td>
+<td class="attributes">
+&lt;optional><br>
+</td>
+<td class="description last"><p>(default: <code>false</code>) if set to <code>true</code> single servers are launched instead of a cluster of them</p></td>
+</tr>
 </tbody>
 </table>
 </td>
@@ -166,13 +177,9 @@ If neither port is given, an error is thrown.</p>
 </table>
 <dl class="details">
 <dt class="tag-source">Source:</dt>
-<dd class="tag-source"><ul class="dummy">
-<li>
-<a href="https://github.com/thlorenz/appup/blob/master/index.js">index.js</a>
-<span>, </span>
-<a href="https://github.com/thlorenz/appup/blob/master/index.js#L11">lineno 11</a>
-</li>
-</ul></dd>
+<dd class="tag-source"><ul class="dummy"><li>
+<a href="index.js.html">index.js</a>, <a href="index.js.html#line65">line 65</a>
+</li></ul></dd>
 </dl>
 </dd>
 </dl>

@@ -21,6 +21,8 @@ var argv = optimist
   .describe('tunnel'   , 'sets up local tunnel pointing to pages port and logs url to connect to from remote client')
 
   .describe('config'   , 'point to a config file to override routes, etc. for the pages and api server')
+  
+  .describe('nocluster', 'if set, single servers are launched instead of a cluster of them, which maybe preferred during development')
 
   .default ('apihost'  , 'localhost')
   .boolean ('dedupe')
